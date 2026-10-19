@@ -138,3 +138,10 @@ logging:
     org.hibernate.type.descriptor.sql: TRACE
   pattern:
     console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx"
+
+# VNPay Sandbox stays unavailable until all merchant settings are supplied.
+# Configure /payment/vnpay-ipn as the merchant IPN URL in VNPay's portal.
+vnpay:
+  tmn-code: ${VNPAY_TMN_CODE:}
+  hash-secret: ${VNPAY_HASH_SECRET:}
+  return-url: ${VNPAY_RETURN_URL:}

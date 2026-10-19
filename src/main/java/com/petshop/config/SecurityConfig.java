@@ -66,6 +66,11 @@ public class SecurityConfig {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // In Security 6.3, calling sessionCreationPolicy() enables implicit session
+        // authentication detection. It treats every JWT request (including JS/CSS)
+        // as a new login and deletes the CSRF cookie after the page renders.
+        // Keep stateless repositories/cache, and let authentication stay explicit.
+        http.setSharedObject(SessionCreationPolicy.class, SessionCreationPolicy.STATELESS);
         http
                 // 1. Authentication Provider Registration
                 .authenticationProvider(authenticationProvider())
@@ -154,7 +159,7 @@ public class SecurityConfig {
                 )
 
                 // 5. Stateless: identity comes from the JWT cookie on every request
-                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(s -> s.requireExplicitAuthenticationStrategy(true))
 
                 // 6. Exception & Access Denied Handling
                 .exceptionHandling(exceptions -> exceptions
